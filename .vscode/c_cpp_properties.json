@@ -1,0 +1,23 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/opt/ros/humble/include/**",
+                "/opt/ros/humble/include/hardware_interface",
+                "/opt/ros/humble/include/rclcpp",
+                "/opt/ros/humble/include/controller_interface",
+                "/opt/ros/humble/include/realtime_tools",
+                "/opt/ros/humble/include/control_msgs"
+            ],
+            "defines": [],
+            "compilerPath": "/usr/bin/g++",
+            "cStandard": "c11",
+            "cppStandard": "gnu++17",
+            "intelliSenseMode": "linux-gcc-x64",
+            "configurationProvider": "ms-vscode.cmake-tools"
+        }
+    ],
+    "version": 4
+}
