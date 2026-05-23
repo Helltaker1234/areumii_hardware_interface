@@ -1,15 +1,18 @@
 #include "hardware_interface/system_interface.hpp"
 #include "rclcpp_lifecycle/node_interfaces/lifecycle_node_interface.hpp"
+#include <vector>
 
 
 #define AREUMII_HARDWARE_INTERFACE_PUBLIC __attribute__((visibility("default")))
 
 
-using CallbackReturn = rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn;
 
 
 namespace areumii_hardware_interface
 {
+
+    using CallbackReturn = rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn;
+
     
 class AreumiiHardwareInterface : 
     public hardware_interface::SystemInterface,
@@ -80,6 +83,18 @@ public:
     // ROS 2 제어기가 계산해서 export_command_interfaces로 열어둔 변수에 써넣은 목표값(목표 각도, 속도 등)을 읽어서, 
     // 실제 하드웨어가 알아들을 수 있는 패킷으로 변환해 통신 케이블로 전송합니다.
 
+
+// (optional)
+// prepare_command_mode_switch()
+// perform_command_mode_switch()
+
+
+private:
+
+    // 조인트 상태 및 명령을 저장할 벡터 (A1_URDF.ros2_control.xacro 에 맞춤)
+    std::vector<double> hw_commands_;
+    std::vector<double> hw_positions_;
+    std::vector<double> hw_velocities_;
 
 
 
