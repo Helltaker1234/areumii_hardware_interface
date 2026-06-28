@@ -1,4 +1,4 @@
-#include "areumii_hardware_interface.hpp"
+#include "areumii_hardware_interface/areumii_hardware_interface.hpp"
 
 #include <limits>
 #include <vector>
@@ -22,9 +22,12 @@ namespace areumii_hardware_interface
             return hardware_interface::CallbackReturn::ERROR;
         }
 
-        hw_positions_.assign(info.joints.size(), std::numeric_limits<double>::quiet_NaN());
-        hw_velocities_.assign(info.joints.size(), std::numeric_limits<double>::quiet_NaN());
-        hw_commands_.assign(info.joints.size(), std::numeric_limits<double>::quiet_NaN());
+        pos_commands_.assign(info.joints.size(), std::numeric_limits<double>::quiet_NaN());
+        vel_commands_.assign(info.joints.size(), std::numeric_limits<double>::quiet_NaN());
+
+
+        pos_states_.assign(info.joints.size(), std::numeric_limits<double>::quiet_NaN());
+        vel_states_.assign(info.joints.size(), std::numeric_limits<double>::quiet_NaN());
         
 
         return hardware_interface::CallbackReturn::SUCCESS;
@@ -96,30 +99,30 @@ namespace areumii_hardware_interface
             // 하드웨어 인터페이스 내부의 변수와 ROS 2 시스템(컨트롤러) 사이의 통로를 연결하는 핵심적인 부분
             // "내 클래스의 이 변수가 로봇의 어느 데이터를 담당하는지"를 ROS 2에 등록하는 과정
             //
-            // 정확히는 hw_positions_ 변수가 private 멤버 변수이므로, 외부에서 해당 변수를 호출할 수 없음.
+            // 정확히는 pos_states_ 변수가 private 멤버 변수이므로, 외부에서 해당 변수를 호출할 수 없음.
             // 
             // 이때 ROS2 Controller Manager 가 export_state_interfaces() 함수를 호출한다는 점을 이용하여, 
             // state_interfaces.emplace_back() 함수에 의해 다음을 알게 됨. 
             //      - info_.joints[i].name                  : 조인트 이름
             //      - hardware_interface::HW_IF_POSITION    : 제어 타입
-            //      - &hw_positions_[i]                     : hw_positions_ 주소
+            //      - &pos_states_[i]                     : pos_states_ 주소
             //
             // emplace_back 된 state_interfaces return 함으로써 
-            // 하드웨어 인터페이스 내부의 변수(hw_positions_)와 ROS 2 시스템(컨트롤러) 사이의 통로를 연결하게 됨.
+            // 하드웨어 인터페이스 내부의 변수(pos_states_)와 ROS 2 시스템(컨트롤러) 사이의 통로를 연결하게 됨.
 
             state_interfaces.emplace_back(hardware_interface::StateInterface(
-                info_.joints[i].name, hardware_interface::HW_IF_POSITION, &hw_positions_[i]));
-            // [ &hw_positions_[i] >> 각 joint 의 state interface 의 값이 담길 변수의 주소 ]
+                info_.joints[i].name, hardware_interface::HW_IF_POSITION, &pos_states_[i]));
+            // [ &pos_states_[i] >> 각 joint 의 state interface 의 값이 담길 변수의 주소 ]
             //
-            //   0. StateInterface() : xacro 의 joint 의 state interface 와 &hw_positions_[i] 주소를 연결. 
+            //   0. StateInterface() : xacro 의 joint 의 state interface 와 &pos_states_[i] 주소를 연결. 
             //                         (이를 통해 Controller manager 가 이를 알 수 있게 한다.)
-            //   1. read() 함수로 모터의 각도 값을 읽어옴. 이를 hw_positions_[i] 변수에 값으로 "덮어씌움".
-            //   2. Controller manager 가 &hw_positions_[i] 주소를 JointStateBroadcaster 에게 전달함.
-            //   3. JointStateBroadcaster 가 &hw_positions_[i] 주소의 hw_positions_[i] 값을 읽음.
+            //   1. read() 함수로 모터의 각도 값을 읽어옴. 이를 pos_states_[i] 변수에 값으로 "덮어씌움".
+            //   2. Controller manager 가 &pos_states_[i] 주소를 JointStateBroadcaster 에게 전달함.
+            //   3. JointStateBroadcaster 가 &pos_states_[i] 주소의 pos_states_[i] 값을 읽음.
             
 
             state_interfaces.emplace_back(hardware_interface::StateInterface(
-                info_.joints[i].name, hardware_interface::HW_IF_VELOCITY, &hw_velocities_[i]));
+                info_.joints[i].name, hardware_interface::HW_IF_VELOCITY, &vel_states_[i]));
                 
         }
         return state_interfaces;
@@ -134,13 +137,13 @@ namespace areumii_hardware_interface
             // "내 클래스의 이 변수가 로봇의 어느 데이터를 담당하는지"를 ROS 2에 등록하는 과정
 
             command_interfaces.emplace_back(hardware_interface::CommandInterface(
-                info_.joints[i].name, hardware_interface::HW_IF_POSITION, &hw_commands_[i]));
-            // [ &hw_commands_[i] >> 각 joint 의 command interface 의 값이 담길 변수의 주소 ]
+                info_.joints[i].name, hardware_interface::HW_IF_POSITION, &pos_commands_[i]));
+            // [ &pos_commands_[i] >> 각 joint 의 command interface 의 값이 담길 변수의 주소 ]
             //
-            //   0. CommandInterface() : xacro 의 joint 의 command interface 와 &hw_commands_[i] 주소를 연결. 
+            //   0. CommandInterface() : xacro 의 joint 의 command interface 와 &pos_commands_[i] 주소를 연결. 
             //                           (이를 통해 Controller manager 가 이를 알 수 있게 한다.)
-            //   1. JointTrajectoryController(또는 임의의 ROS2 컨트롤러)가 출력한 command(또는 desired, reference 등) 값을 &hw_commands_[i] 주소에 직접 써넣는다.
-            //   2. 이후 write() 함수에서 hw_commands_[i] 변수에 적힌 값을 보고, 실제 모터로 통신을 보냄. 
+            //   1. JointTrajectoryController(또는 임의의 ROS2 컨트롤러)가 출력한 command(또는 desired, reference 등) 값을 &pos_commands_[i] 주소에 직접 써넣는다.
+            //   2. 이후 write() 함수에서 pos_commands_[i] 변수에 적힌 값을 보고, 실제 모터로 통신을 보냄. 
             
 
         }
@@ -153,8 +156,8 @@ namespace areumii_hardware_interface
     {
         for (size_t i = 0; i < info_.joints.size(); i++)
         {
-            // hw_positions_[i] = 승윤이_read();
-            // hw_velocities_[i] = 승윤이_read();
+            // pos_states_[i] = 승윤이_read();
+            // vel_states_[i] = 승윤이_read();
         }
         
         return hardware_interface::return_type::OK;
@@ -167,11 +170,11 @@ namespace areumii_hardware_interface
         for (size_t i = 0; i < info_.joints.size(); i++)
         {
             // {pos} 제어의 경우
-            // 승윤이_write(hw_commands_[i]);
+            // 승윤이_write(pos_commands_[i]);
 
             // {pos, vel} 제어의 경우 >> 미완성
-            // 승윤이_write(hw_commands_pos_[i]);
-            // 승윤이_write(hw_commands_vel_[i]);
+            // 승윤이_write(pos_commands_[i]);
+            // 승윤이_write(pos_commands_[i]);
 
         }
 

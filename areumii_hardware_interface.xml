@@ -1,0 +1,15 @@
+
+<!-- pluginlib 에 visible 하기 위해 필요한 파일 -->
+<!-- areumii_hardware_interface/AreumiiHardwareInterface 를 ros2_control hardware 태그에 입력하면 됨.-->
+
+
+
+<library path="areumii_hardware_interface">
+  <class name="areumii_hardware_interface/AreumiiHardwareInterface"
+         type="areumii_hardware_interface::AreumiiHardwareInterface"
+         base_class_type="hardware_interface::SystemInterface">
+    <description>
+      AReuMii robot hardware interface plugin for ros2_control.
+    </description>
+  </class>
+</library>

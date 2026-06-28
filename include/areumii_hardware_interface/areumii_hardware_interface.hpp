@@ -92,9 +92,11 @@ public:
 private:
 
     // 조인트 상태 및 명령을 저장할 벡터 (A1_URDF.ros2_control.xacro 에 맞춤)
-    std::vector<double> hw_commands_;
-    std::vector<double> hw_positions_;
-    std::vector<double> hw_velocities_;
+    std::vector<double> pos_commands_;
+    std::vector<double> vel_commands_;
+
+    std::vector<double> pos_states_;
+    std::vector<double> vel_states_;
 
 
 
