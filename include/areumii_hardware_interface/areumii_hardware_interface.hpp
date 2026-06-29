@@ -1,5 +1,6 @@
 #include "hardware_interface/system_interface.hpp"
 #include "rclcpp_lifecycle/node_interfaces/lifecycle_node_interface.hpp"
+#include "Sharemem.hpp"
 #include <vector>
 
 
@@ -7,9 +8,9 @@
 
 
 
-
 namespace areumii_hardware_interface
 {
+    constexpr int MOTOR_NUM =14;
 
     using CallbackReturn = rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn;
 
@@ -18,8 +19,14 @@ class AreumiiHardwareInterface :
     public hardware_interface::SystemInterface,
     public rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface
 {
+private:
+    Control_Shm<MOTOR_NUM> ctrl_shm;
+    Control_param ctrl_buf[MOTOR_NUM];
+    Feedback_Param fb_buf[MOTOR_NUM];
+    Control_Shm<MOTOR_NUM>::Control_Struct* shm_ptr;
 public:
-    AreumiiHardwareInterface(){};
+
+    AreumiiHardwareInterface() : ctrl_shm(13563267) { shm_ptr = ctrl_shm.get(); };
 
 
 // 초기화 및 메모리 연결 (System Interface Setup)

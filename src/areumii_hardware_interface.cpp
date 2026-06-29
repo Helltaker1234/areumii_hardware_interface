@@ -157,11 +157,14 @@ namespace areumii_hardware_interface
 
     hardware_interface::return_type AreumiiHardwareInterface::read(const rclcpp::Time & time, const rclcpp::Duration & period)
     {
+        while (!shm_ptr->try_read_fb(fb_buf));  // torn read면 재시도        
+        
         for (size_t i = 0; i < info_.joints.size(); i++)
         {
-            // pos_states_[i] = 승윤이_read();
-            // vel_states_[i] = 승윤이_read();
+            pos_states_[i] = static_cast<double>(fb_buf[i].pos);
+            vel_states_[i] = static_cast<double>(fb_buf[i].vel);
         }
+        
         
         return hardware_interface::return_type::OK;
     }
@@ -170,16 +173,51 @@ namespace areumii_hardware_interface
     
     hardware_interface::return_type AreumiiHardwareInterface::write(const rclcpp::Time & time, const rclcpp::Duration & period)
     {
+        // ctrl_buf[0].pos = 1;
+        // ctrl_buf[1].pos = 1;
+        // ctrl_buf[2].pos = 1;
+        // ctrl_buf[3].pos = 1;
+        // ctrl_buf[4].pos = 1;
+        // ctrl_buf[5].pos = 1;
+        // ctrl_buf[6].pos = 1;
+        // ctrl_buf[7].pos = 1;
+        // ctrl_buf[8].pos = 1;
+        // ctrl_buf[9].pos = 1;
+        // ctrl_buf[10].pos = 1;
+        // ctrl_buf[11].pos = 1;
+        // ctrl_buf[12].pos = 1;
+        // ctrl_buf[13].pos = 1;  // 단위:rad 
+
+        // ctrl_buf[0].vel = 1;
+        // ctrl_buf[1].vel = 1;
+        // ctrl_buf[2].vel = 1;
+        // ctrl_buf[3].vel = 1;
+        // ctrl_buf[4].vel = 1;
+        // ctrl_buf[5].vel = 1;
+        // ctrl_buf[6].vel = 1;
+        // ctrl_buf[7].vel = 1;
+        // ctrl_buf[8].vel = 1;
+        // ctrl_buf[9].vel = 1;
+        // ctrl_buf[10].vel = 1;
+        // ctrl_buf[11].vel = 1;
+        // ctrl_buf[12].vel = 1;
+        // ctrl_buf[13].vel = 1;  // 단위:rad/s 
+        // shm_ptr->write_ctrl(ctrl_buf);
+        //나는 보통 이런식으로 루프 언롤링을 선호함. 또한 숫자를 매크로나 상수 표현으로 하는 편. 
+
+
+        
         for (size_t i = 0; i < info_.joints.size(); i++)
         {
-            // {pos} 제어의 경우
-            // 승윤이_write(pos_commands_[i]);
+            ctrl_buf[i].pos = pos_commands_[i];
+            ctrl_buf[i].vel = vel_commands_[i];
 
             // {pos, vel} 제어의 경우 >> 미완성
             // 승윤이_write(pos_commands_[i]);
-            // 승윤이_write(pos_commands_[i]);
+            // 승윤이_write(vel_commands_[i]);
 
         }
+        shm_ptr->write_ctrl(ctrl_buf);
 
         return hardware_interface::return_type::OK;
     }
