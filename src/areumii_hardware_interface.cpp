@@ -146,6 +146,9 @@ namespace areumii_hardware_interface
             //   2. 이후 write() 함수에서 pos_commands_[i] 변수에 적힌 값을 보고, 실제 모터로 통신을 보냄. 
             
 
+            command_interfaces.emplace_back(hardware_interface::CommandInterface(
+                info_.joints[i].name, hardware_interface::HW_IF_VELOCITY, &vel_commands_[i]));
+
         }
         return command_interfaces;
     }
