@@ -10,7 +10,7 @@
 
 namespace areumii_hardware_interface
 {
-    constexpr int MOTOR_NUM =14;
+    constexpr int MOTOR_NUM =4;
 
     using CallbackReturn = rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn;
 
