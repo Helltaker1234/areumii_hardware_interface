@@ -78,6 +78,30 @@ namespace areumii_hardware_interface
     
     CallbackReturn AreumiiHardwareInterface::on_activate(const rclcpp_lifecycle::State &)
     {
+
+        // activate 단계에서 0 으로 초기화 해야 NaN 이 pos_commands_, vel_commands_ 로 명령되어지는 것을 막을 수 있음.
+        // controller_manager, spawn_controllers 명령어 실행시, 모터가 갑자기 돌아가는 이유가 이거였음.
+
+        pos_commands_[CONTROL_VEC_INDEX_RIGHT_SHOULDER_ROLL]    = 0.0; // static_cast<double>(fb_buf[SHM_INDEX_RIGHT_SHOULDER_ROLL].pos);
+        pos_commands_[CONTROL_VEC_INDEX_RIGHT_SHOULDER_PITCH]   = 0.0; // static_cast<double>(fb_buf[SHM_INDEX_RIGHT_SHOULDER_PITCH].pos);
+        pos_commands_[CONTROL_VEC_INDEX_RIGHT_SHOULDER_YAW]     = 0.0; // static_cast<double>(fb_buf[SHM_INDEX_RIGHT_SHOULDER_YAW].pos);
+        pos_commands_[CONTROL_VEC_INDEX_RIGHT_ELBOW_PITCH]      = 0.0; // static_cast<double>(fb_buf[SHM_INDEX_RIGHT_ELBOW_PITCH].pos);
+        pos_commands_[CONTROL_VEC_INDEX_RIGHT_WRIST_ROLL]       = 0.0; // static_cast<double>(fb_buf[SHM_INDEX_RIGHT_WRIST_ROLL].pos);
+        pos_commands_[CONTROL_VEC_INDEX_RIGHT_WRIST_YAW]        = 0.0; // static_cast<double>(fb_buf[SHM_INDEX_RIGHT_WRIST_YAW].pos);
+        pos_commands_[CONTROL_VEC_INDEX_RIGHT_WRIST_PITCH]      = 0.0; // static_cast<double>(fb_buf[SHM_INDEX_RIGHT_WRIST_PITCH].pos);
+          // 단위:rad 
+
+        vel_commands_[CONTROL_VEC_INDEX_RIGHT_SHOULDER_ROLL]    = 0.0;
+        vel_commands_[CONTROL_VEC_INDEX_RIGHT_SHOULDER_PITCH]   = 0.0;
+        vel_commands_[CONTROL_VEC_INDEX_RIGHT_SHOULDER_YAW]     = 0.0;
+        vel_commands_[CONTROL_VEC_INDEX_RIGHT_ELBOW_PITCH]      = 0.0;
+        vel_commands_[CONTROL_VEC_INDEX_RIGHT_WRIST_ROLL]       = 0.0;
+        vel_commands_[CONTROL_VEC_INDEX_RIGHT_WRIST_YAW]        = 0.0;
+        vel_commands_[CONTROL_VEC_INDEX_RIGHT_WRIST_PITCH]      = 0.0;
+         // 단위:rad/s 
+        shm_ptr->write_ctrl(ctrl_buf);
+
+
         // command 를 줄 수 있는 상태가 됨.
         return CallbackReturn::SUCCESS;
     }
@@ -197,22 +221,22 @@ namespace areumii_hardware_interface
     
     hardware_interface::return_type AreumiiHardwareInterface::write(const rclcpp::Time & time, const rclcpp::Duration & period)
     {
-        ctrl_buf[0].pos = pos_commands_[CONTROL_VEC_INDEX_RIGHT_SHOULDER_ROLL];
-        ctrl_buf[1].pos = pos_commands_[CONTROL_VEC_INDEX_RIGHT_SHOULDER_PITCH];
-        ctrl_buf[2].pos = pos_commands_[CONTROL_VEC_INDEX_RIGHT_SHOULDER_YAW];
-        ctrl_buf[3].pos = pos_commands_[CONTROL_VEC_INDEX_RIGHT_ELBOW_PITCH];
-        ctrl_buf[4].pos = pos_commands_[CONTROL_VEC_INDEX_RIGHT_WRIST_ROLL];
-        ctrl_buf[5].pos = pos_commands_[CONTROL_VEC_INDEX_RIGHT_WRIST_YAW];
-        ctrl_buf[6].pos = pos_commands_[CONTROL_VEC_INDEX_RIGHT_WRIST_PITCH];
+        ctrl_buf[SHM_INDEX_RIGHT_SHOULDER_ROLL].pos     = pos_commands_[CONTROL_VEC_INDEX_RIGHT_SHOULDER_ROLL];
+        ctrl_buf[SHM_INDEX_RIGHT_SHOULDER_PITCH].pos    = pos_commands_[CONTROL_VEC_INDEX_RIGHT_SHOULDER_PITCH];
+        ctrl_buf[SHM_INDEX_RIGHT_SHOULDER_YAW].pos      = pos_commands_[CONTROL_VEC_INDEX_RIGHT_SHOULDER_YAW];
+        ctrl_buf[SHM_INDEX_RIGHT_ELBOW_PITCH].pos       = pos_commands_[CONTROL_VEC_INDEX_RIGHT_ELBOW_PITCH];
+        ctrl_buf[SHM_INDEX_RIGHT_WRIST_ROLL].pos        = pos_commands_[CONTROL_VEC_INDEX_RIGHT_WRIST_ROLL];
+        ctrl_buf[SHM_INDEX_RIGHT_WRIST_YAW].pos         = pos_commands_[CONTROL_VEC_INDEX_RIGHT_WRIST_YAW];
+        ctrl_buf[SHM_INDEX_RIGHT_WRIST_PITCH].pos       = pos_commands_[CONTROL_VEC_INDEX_RIGHT_WRIST_PITCH];
           // 단위:rad 
 
-        ctrl_buf[0].vel = vel_commands_[CONTROL_VEC_INDEX_RIGHT_SHOULDER_ROLL];
-        ctrl_buf[1].vel = vel_commands_[CONTROL_VEC_INDEX_RIGHT_SHOULDER_PITCH];
-        ctrl_buf[2].vel = vel_commands_[CONTROL_VEC_INDEX_RIGHT_SHOULDER_YAW];
-        ctrl_buf[3].vel = vel_commands_[CONTROL_VEC_INDEX_RIGHT_ELBOW_PITCH];
-        ctrl_buf[4].vel = vel_commands_[CONTROL_VEC_INDEX_RIGHT_WRIST_ROLL];
-        ctrl_buf[5].vel = vel_commands_[CONTROL_VEC_INDEX_RIGHT_WRIST_YAW];
-        ctrl_buf[6].vel = vel_commands_[CONTROL_VEC_INDEX_RIGHT_WRIST_PITCH];
+        ctrl_buf[SHM_INDEX_RIGHT_SHOULDER_ROLL].vel     = vel_commands_[CONTROL_VEC_INDEX_RIGHT_SHOULDER_ROLL];
+        ctrl_buf[SHM_INDEX_RIGHT_SHOULDER_PITCH].vel    = vel_commands_[CONTROL_VEC_INDEX_RIGHT_SHOULDER_PITCH];
+        ctrl_buf[SHM_INDEX_RIGHT_SHOULDER_YAW].vel      = vel_commands_[CONTROL_VEC_INDEX_RIGHT_SHOULDER_YAW];
+        ctrl_buf[SHM_INDEX_RIGHT_ELBOW_PITCH].vel       = vel_commands_[CONTROL_VEC_INDEX_RIGHT_ELBOW_PITCH];
+        ctrl_buf[SHM_INDEX_RIGHT_WRIST_ROLL].vel        = vel_commands_[CONTROL_VEC_INDEX_RIGHT_WRIST_ROLL];
+        ctrl_buf[SHM_INDEX_RIGHT_WRIST_YAW].vel         = vel_commands_[CONTROL_VEC_INDEX_RIGHT_WRIST_YAW];
+        ctrl_buf[SHM_INDEX_RIGHT_WRIST_PITCH].vel       = vel_commands_[CONTROL_VEC_INDEX_RIGHT_WRIST_PITCH];
          // 단위:rad/s 
         shm_ptr->write_ctrl(ctrl_buf);
 
