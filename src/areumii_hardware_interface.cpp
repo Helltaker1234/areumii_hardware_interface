@@ -5,6 +5,18 @@
 #include "hardware_interface/types/hardware_interface_type_values.hpp"
 #include "rclcpp/rclcpp.hpp"
 #include "pluginlib/class_list_macros.hpp"
+#include <algorithm>
+
+
+#define open_gripper_L_REV -0.44
+#define close_gripper_L_REV 0.85
+#define open_gripper_L_PRISM 0.03
+#define close_gripper_L_PRISM 0.001
+
+#define open_gripper_R_REV -0.62
+#define close_gripper_R_REV 0.78
+#define open_gripper_R_PRISM 0.03
+#define close_gripper_R_PRISM 0.001
 
 namespace areumii_hardware_interface
 {
@@ -235,8 +247,8 @@ namespace areumii_hardware_interface
         vel_states_[CONTROL_VEC_INDEX_LEFT_WRIST_PITCH] = static_cast<double>(fb_buf[SHM_INDEX_LEFT_WRIST_PITCH].vel);
 
         // 그리퍼 미장착 버전이라 주석 처리
-        pos_states_[CONTROL_VEC_INDEX_LEFT_GRIPPER] = static_cast<double>(fb_buf[SHM_INDEX_LEFT_GRIPPER].pos);
-        vel_states_[CONTROL_VEC_INDEX_LEFT_GRIPPER] = static_cast<double>(fb_buf[SHM_INDEX_LEFT_GRIPPER].vel);
+        pos_states_[CONTROL_VEC_INDEX_LEFT_GRIPPER] = pos_commands_[CONTROL_VEC_INDEX_LEFT_GRIPPER];
+        vel_states_[CONTROL_VEC_INDEX_LEFT_GRIPPER] = vel_commands_[CONTROL_VEC_INDEX_LEFT_GRIPPER];
 
 
         // ---- 오른팔 ----
@@ -268,8 +280,8 @@ namespace areumii_hardware_interface
         vel_states_[CONTROL_VEC_INDEX_RIGHT_WRIST_PITCH] = static_cast<double>(fb_buf[SHM_INDEX_RIGHT_WRIST_PITCH].vel);   // right_wrist_pitch
 
         // 그리퍼 미장착 버전이라 주석 처리
-        pos_states_[CONTROL_VEC_INDEX_RIGHT_GRIPPER] = static_cast<double>(fb_buf[SHM_INDEX_RIGHT_GRIPPER].pos);   // right_gripper
-        vel_states_[CONTROL_VEC_INDEX_RIGHT_GRIPPER] = static_cast<double>(fb_buf[SHM_INDEX_RIGHT_GRIPPER].vel);   // right_gripper
+        pos_states_[CONTROL_VEC_INDEX_RIGHT_GRIPPER] = pos_commands_[CONTROL_VEC_INDEX_RIGHT_GRIPPER];
+        vel_states_[CONTROL_VEC_INDEX_RIGHT_GRIPPER] = vel_commands_[CONTROL_VEC_INDEX_RIGHT_GRIPPER];   // right_gripper
 
         // pos_states_[7] = static_cast<double>(fb_buf[0].pos);
         // vel_states_[7] = static_cast<double>(fb_buf[0].vel);
@@ -297,7 +309,7 @@ namespace areumii_hardware_interface
         ctrl_buf[SHM_INDEX_LEFT_WRIST_YAW].pos = pos_commands_[CONTROL_VEC_INDEX_LEFT_WRIST_YAW];
         ctrl_buf[SHM_INDEX_LEFT_WRIST_PITCH].pos = pos_commands_[CONTROL_VEC_INDEX_LEFT_WRIST_PITCH];
         // 그리퍼 미장착 버전이라 주석 처리
-        ctrl_buf[SHM_INDEX_LEFT_GRIPPER].pos = pos_commands_[CONTROL_VEC_INDEX_LEFT_GRIPPER];
+        ctrl_buf[SHM_INDEX_LEFT_GRIPPER].pos = close_gripper_L_REV + (pos_commands_[CONTROL_VEC_INDEX_LEFT_GRIPPER] - close_gripper_L_PRISM) * (open_gripper_L_REV - close_gripper_L_REV) / (open_gripper_L_PRISM - close_gripper_L_PRISM);
 
         // ---- 오른팔 ----
         //
@@ -314,7 +326,7 @@ namespace areumii_hardware_interface
         ctrl_buf[SHM_INDEX_RIGHT_WRIST_YAW].pos = pos_commands_[CONTROL_VEC_INDEX_RIGHT_WRIST_YAW];   // right_wrist_yaw
         ctrl_buf[SHM_INDEX_RIGHT_WRIST_PITCH].pos = pos_commands_[CONTROL_VEC_INDEX_RIGHT_WRIST_PITCH];   // right_wrist_pitch
         // 그리퍼 미장착 버전이라 주석 처리
-        ctrl_buf[SHM_INDEX_RIGHT_GRIPPER].pos = pos_commands_[CONTROL_VEC_INDEX_RIGHT_GRIPPER];   // right_gripper
+        ctrl_buf[SHM_INDEX_RIGHT_GRIPPER].pos = close_gripper_R_REV + (pos_commands_[CONTROL_VEC_INDEX_RIGHT_GRIPPER] - close_gripper_R_PRISM) * (open_gripper_R_REV - close_gripper_R_REV) / (open_gripper_R_PRISM - close_gripper_R_PRISM);
           // 단위:rad 
 
         // ---- 왼팔 ----
