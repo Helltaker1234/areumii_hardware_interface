@@ -82,41 +82,49 @@ namespace areumii_hardware_interface
         // activate 단계에서 0 으로 초기화 해야 NaN 이 pos_commands_, vel_commands_ 로 명령되어지는 것을 막을 수 있음.
         // controller_manager, spawn_controllers 명령어 실행시, 모터가 갑자기 돌아가는 이유가 이거였음.
 
-        pos_commands_[CONTROL_VEC_INDEX_RIGHT_SHOULDER_PITCH]   = 0.0; // static_cast<double>(fb_buf[SHM_INDEX_RIGHT_SHOULDER_PITCH].pos);
-        pos_commands_[CONTROL_VEC_INDEX_RIGHT_SHOULDER_ROLL]    = 0.0; // static_cast<double>(fb_buf[SHM_INDEX_RIGHT_SHOULDER_ROLL].pos);
-        pos_commands_[CONTROL_VEC_INDEX_RIGHT_SHOULDER_YAW]     = 0.0; // static_cast<double>(fb_buf[SHM_INDEX_RIGHT_SHOULDER_YAW].pos);
-        pos_commands_[CONTROL_VEC_INDEX_RIGHT_ELBOW_PITCH]      = 0.0; // static_cast<double>(fb_buf[SHM_INDEX_RIGHT_ELBOW_PITCH].pos);
-        pos_commands_[CONTROL_VEC_INDEX_RIGHT_WRIST_ROLL]       = 0.0; // static_cast<double>(fb_buf[SHM_INDEX_RIGHT_WRIST_ROLL].pos);
-        pos_commands_[CONTROL_VEC_INDEX_RIGHT_WRIST_YAW]        = 0.0; // static_cast<double>(fb_buf[SHM_INDEX_RIGHT_WRIST_YAW].pos);
-        pos_commands_[CONTROL_VEC_INDEX_RIGHT_WRIST_PITCH]      = 0.0; // static_cast<double>(fb_buf[SHM_INDEX_RIGHT_WRIST_PITCH].pos);
-          // 단위:rad 
+        pos_commands_[CONTROL_VEC_INDEX_LEFT_SHOULDER_PITCH]   = 0.0; // static_cast<double>(fb_buf[SHM_INDEX_RIGHT_SHOULDER_PITCH].pos);
+        pos_commands_[CONTROL_VEC_INDEX_LEFT_SHOULDER_ROLL]    = 0.0; // static_cast<double>(fb_buf[SHM_INDEX_RIGHT_SHOULDER_ROLL].pos);
+        pos_commands_[CONTROL_VEC_INDEX_LEFT_SHOULDER_YAW]     = 0.0; // static_cast<double>(fb_buf[SHM_INDEX_RIGHT_SHOULDER_YAW].pos);
+        pos_commands_[CONTROL_VEC_INDEX_LEFT_ELBOW_PITCH]      = 0.0; // static_cast<double>(fb_buf[SHM_INDEX_RIGHT_ELBOW_PITCH].pos);
+        pos_commands_[CONTROL_VEC_INDEX_LEFT_WRIST_ROLL]       = 0.0; // static_cast<double>(fb_buf[SHM_INDEX_RIGHT_WRIST_ROLL].pos);
+        pos_commands_[CONTROL_VEC_INDEX_LEFT_WRIST_YAW]        = 0.0; // static_cast<double>(fb_buf[SHM_INDEX_RIGHT_WRIST_YAW].pos);
+        pos_commands_[CONTROL_VEC_INDEX_LEFT_WRIST_PITCH]      = 0.0; // static_cast<double>(fb_buf[SHM_INDEX_RIGHT_WRIST_PITCH].pos);
+        
+        pos_commands_[CONTROL_VEC_INDEX_LEFT_GRIPPER]      = 0.0;
+        // 단위:rad 
 
-        vel_commands_[CONTROL_VEC_INDEX_RIGHT_SHOULDER_PITCH]   = 0.0;
+        vel_commands_[CONTROL_VEC_INDEX_LEFT_SHOULDER_PITCH]   = 0.0;
+        vel_commands_[CONTROL_VEC_INDEX_LEFT_SHOULDER_ROLL]    = 0.0;
+        vel_commands_[CONTROL_VEC_INDEX_LEFT_SHOULDER_YAW]     = 0.0;
+        vel_commands_[CONTROL_VEC_INDEX_LEFT_ELBOW_PITCH]      = 0.0;
+        vel_commands_[CONTROL_VEC_INDEX_LEFT_WRIST_ROLL]       = 0.0;
+        vel_commands_[CONTROL_VEC_INDEX_LEFT_WRIST_YAW]        = 0.0;
+        vel_commands_[CONTROL_VEC_INDEX_LEFT_WRIST_PITCH]      = 0.0;
+        
+        vel_commands_[CONTROL_VEC_INDEX_LEFT_GRIPPER]      = 0.0;
+        // 단위:rad/s 
+
+        pos_commands_[CONTROL_VEC_INDEX_RIGHT_SHOULDER_PITCH]    = 0.0; 
+        pos_commands_[CONTROL_VEC_INDEX_RIGHT_SHOULDER_ROLL]    = 0.0; 
+        pos_commands_[CONTROL_VEC_INDEX_RIGHT_SHOULDER_YAW]    = 0.0; 
+        pos_commands_[CONTROL_VEC_INDEX_RIGHT_ELBOW_PITCH]   = 0.0; 
+        pos_commands_[CONTROL_VEC_INDEX_RIGHT_WRIST_ROLL]   = 0.0; 
+        pos_commands_[CONTROL_VEC_INDEX_RIGHT_WRIST_YAW]   = 0.0; 
+        pos_commands_[CONTROL_VEC_INDEX_RIGHT_WRIST_PITCH]   = 0.0; 
+        
+        pos_commands_[CONTROL_VEC_INDEX_RIGHT_GRIPPER]      = 0.0;
+        // 단위:rad 
+
+        vel_commands_[CONTROL_VEC_INDEX_RIGHT_SHOULDER_PITCH]    = 0.0;
         vel_commands_[CONTROL_VEC_INDEX_RIGHT_SHOULDER_ROLL]    = 0.0;
-        vel_commands_[CONTROL_VEC_INDEX_RIGHT_SHOULDER_YAW]     = 0.0;
-        vel_commands_[CONTROL_VEC_INDEX_RIGHT_ELBOW_PITCH]      = 0.0;
-        vel_commands_[CONTROL_VEC_INDEX_RIGHT_WRIST_ROLL]       = 0.0;
-        vel_commands_[CONTROL_VEC_INDEX_RIGHT_WRIST_YAW]        = 0.0;
-        vel_commands_[CONTROL_VEC_INDEX_RIGHT_WRIST_PITCH]      = 0.0;
-         // 단위:rad/s 
-
-        pos_commands_[7]    = 0.0; 
-        pos_commands_[8]    = 0.0; 
-        pos_commands_[9]    = 0.0; 
-        pos_commands_[10]   = 0.0; 
-        pos_commands_[11]   = 0.0; 
-        pos_commands_[12]   = 0.0; 
-        pos_commands_[13]   = 0.0; 
-          // 단위:rad 
-
-        vel_commands_[7]    = 0.0;
-        vel_commands_[8]    = 0.0;
-        vel_commands_[9]    = 0.0;
-        vel_commands_[10]   = 0.0;
-        vel_commands_[11]   = 0.0;
-        vel_commands_[12]   = 0.0;
-        vel_commands_[13]   = 0.0;
-         // 단위:rad/s 
+        vel_commands_[CONTROL_VEC_INDEX_RIGHT_SHOULDER_YAW]    = 0.0;
+        vel_commands_[CONTROL_VEC_INDEX_RIGHT_ELBOW_PITCH]   = 0.0;
+        vel_commands_[CONTROL_VEC_INDEX_RIGHT_WRIST_ROLL]   = 0.0;
+        vel_commands_[CONTROL_VEC_INDEX_RIGHT_WRIST_YAW]   = 0.0;
+        vel_commands_[CONTROL_VEC_INDEX_RIGHT_WRIST_PITCH]   = 0.0;
+        
+        vel_commands_[CONTROL_VEC_INDEX_RIGHT_GRIPPER]      = 0.0;
+        // 단위:rad/s 
 
 
 
@@ -227,8 +235,8 @@ namespace areumii_hardware_interface
         vel_states_[CONTROL_VEC_INDEX_LEFT_WRIST_PITCH] = static_cast<double>(fb_buf[SHM_INDEX_LEFT_WRIST_PITCH].vel);
 
         // 그리퍼 미장착 버전이라 주석 처리
-        // pos_states_[CONTROL_VEC_INDEX_LEFT_GRIPPER] = static_cast<double>(fb_buf[SHM_INDEX_LEFT_GRIPPER].pos);
-        // vel_states_[CONTROL_VEC_INDEX_LEFT_GRIPPER] = static_cast<double>(fb_buf[SHM_INDEX_LEFT_GRIPPER].vel);
+        pos_states_[CONTROL_VEC_INDEX_LEFT_GRIPPER] = static_cast<double>(fb_buf[SHM_INDEX_LEFT_GRIPPER].pos);
+        vel_states_[CONTROL_VEC_INDEX_LEFT_GRIPPER] = static_cast<double>(fb_buf[SHM_INDEX_LEFT_GRIPPER].vel);
 
 
         // ---- 오른팔 ----
@@ -238,30 +246,30 @@ namespace areumii_hardware_interface
         // 왼팔 그리퍼 자리만큼 한 칸씩 앞당겨진 7~13 이 된다. (아래 숫자를 직접 박아둔 이유)
         // 반면 fb_buf / ctrl_buf 는 공유메모리 레이아웃 그대로이므로 SHM_INDEX_* 를 그대로 쓴다.
         // 그리퍼가 추가되면 아래 숫자를 CONTROL_VEC_INDEX_RIGHT_* 로 되돌리고 그리퍼 주석을 풀면 된다.
-        pos_states_[7] = static_cast<double>(fb_buf[SHM_INDEX_RIGHT_SHOULDER_PITCH].pos);   // right_shoulder_pitch
-        vel_states_[7] = static_cast<double>(fb_buf[SHM_INDEX_RIGHT_SHOULDER_PITCH].vel);   // right_shoulder_pitch
+        pos_states_[CONTROL_VEC_INDEX_RIGHT_SHOULDER_PITCH] = static_cast<double>(fb_buf[SHM_INDEX_RIGHT_SHOULDER_PITCH].pos);   // right_shoulder_pitch
+        vel_states_[CONTROL_VEC_INDEX_RIGHT_SHOULDER_PITCH] = static_cast<double>(fb_buf[SHM_INDEX_RIGHT_SHOULDER_PITCH].vel);   // right_shoulder_pitch
 
-        pos_states_[8] = static_cast<double>(fb_buf[SHM_INDEX_RIGHT_SHOULDER_ROLL].pos);   // right_shoulder_roll
-        vel_states_[8] = static_cast<double>(fb_buf[SHM_INDEX_RIGHT_SHOULDER_ROLL].vel);   // right_shoulder_roll
+        pos_states_[CONTROL_VEC_INDEX_RIGHT_SHOULDER_ROLL] = static_cast<double>(fb_buf[SHM_INDEX_RIGHT_SHOULDER_ROLL].pos);   // right_shoulder_roll
+        vel_states_[CONTROL_VEC_INDEX_RIGHT_SHOULDER_ROLL] = static_cast<double>(fb_buf[SHM_INDEX_RIGHT_SHOULDER_ROLL].vel);   // right_shoulder_roll
 
-        pos_states_[9] = static_cast<double>(fb_buf[SHM_INDEX_RIGHT_SHOULDER_YAW].pos);   // right_shoulder_yaw
-        vel_states_[9] = static_cast<double>(fb_buf[SHM_INDEX_RIGHT_SHOULDER_YAW].vel);   // right_shoulder_yaw
+        pos_states_[CONTROL_VEC_INDEX_RIGHT_SHOULDER_YAW] = static_cast<double>(fb_buf[SHM_INDEX_RIGHT_SHOULDER_YAW].pos);   // right_shoulder_yaw
+        vel_states_[CONTROL_VEC_INDEX_RIGHT_SHOULDER_YAW] = static_cast<double>(fb_buf[SHM_INDEX_RIGHT_SHOULDER_YAW].vel);   // right_shoulder_yaw
 
-        pos_states_[10] = static_cast<double>(fb_buf[SHM_INDEX_RIGHT_ELBOW_PITCH].pos);   // right_elbow_pitch
-        vel_states_[10] = static_cast<double>(fb_buf[SHM_INDEX_RIGHT_ELBOW_PITCH].vel);   // right_elbow_pitch
+        pos_states_[CONTROL_VEC_INDEX_RIGHT_ELBOW_PITCH] = static_cast<double>(fb_buf[SHM_INDEX_RIGHT_ELBOW_PITCH].pos);   // right_elbow_pitch
+        vel_states_[CONTROL_VEC_INDEX_RIGHT_ELBOW_PITCH] = static_cast<double>(fb_buf[SHM_INDEX_RIGHT_ELBOW_PITCH].vel);   // right_elbow_pitch
 
-        pos_states_[11] = static_cast<double>(fb_buf[SHM_INDEX_RIGHT_WRIST_ROLL].pos);   // right_wrist_roll
-        vel_states_[11] = static_cast<double>(fb_buf[SHM_INDEX_RIGHT_WRIST_ROLL].vel);   // right_wrist_roll
+        pos_states_[CONTROL_VEC_INDEX_RIGHT_WRIST_ROLL] = static_cast<double>(fb_buf[SHM_INDEX_RIGHT_WRIST_ROLL].pos);   // right_wrist_roll
+        vel_states_[CONTROL_VEC_INDEX_RIGHT_WRIST_ROLL] = static_cast<double>(fb_buf[SHM_INDEX_RIGHT_WRIST_ROLL].vel);   // right_wrist_roll
 
-        pos_states_[12] = static_cast<double>(fb_buf[SHM_INDEX_RIGHT_WRIST_YAW].pos);   // right_wrist_yaw
-        vel_states_[12] = static_cast<double>(fb_buf[SHM_INDEX_RIGHT_WRIST_YAW].vel);   // right_wrist_yaw
+        pos_states_[CONTROL_VEC_INDEX_RIGHT_WRIST_YAW] = static_cast<double>(fb_buf[SHM_INDEX_RIGHT_WRIST_YAW].pos);   // right_wrist_yaw
+        vel_states_[CONTROL_VEC_INDEX_RIGHT_WRIST_YAW] = static_cast<double>(fb_buf[SHM_INDEX_RIGHT_WRIST_YAW].vel);   // right_wrist_yaw
 
-        pos_states_[13] = static_cast<double>(fb_buf[SHM_INDEX_RIGHT_WRIST_PITCH].pos);   // right_wrist_pitch
-        vel_states_[13] = static_cast<double>(fb_buf[SHM_INDEX_RIGHT_WRIST_PITCH].vel);   // right_wrist_pitch
+        pos_states_[CONTROL_VEC_INDEX_RIGHT_WRIST_PITCH] = static_cast<double>(fb_buf[SHM_INDEX_RIGHT_WRIST_PITCH].pos);   // right_wrist_pitch
+        vel_states_[CONTROL_VEC_INDEX_RIGHT_WRIST_PITCH] = static_cast<double>(fb_buf[SHM_INDEX_RIGHT_WRIST_PITCH].vel);   // right_wrist_pitch
 
         // 그리퍼 미장착 버전이라 주석 처리
-        // pos_states_[14] = static_cast<double>(fb_buf[SHM_INDEX_RIGHT_GRIPPER].pos);   // right_gripper
-        // vel_states_[14] = static_cast<double>(fb_buf[SHM_INDEX_RIGHT_GRIPPER].vel);   // right_gripper
+        pos_states_[CONTROL_VEC_INDEX_RIGHT_GRIPPER] = static_cast<double>(fb_buf[SHM_INDEX_RIGHT_GRIPPER].pos);   // right_gripper
+        vel_states_[CONTROL_VEC_INDEX_RIGHT_GRIPPER] = static_cast<double>(fb_buf[SHM_INDEX_RIGHT_GRIPPER].vel);   // right_gripper
 
         // pos_states_[7] = static_cast<double>(fb_buf[0].pos);
         // vel_states_[7] = static_cast<double>(fb_buf[0].vel);
@@ -281,15 +289,15 @@ namespace areumii_hardware_interface
     hardware_interface::return_type AreumiiHardwareInterface::write(const rclcpp::Time & time, const rclcpp::Duration & period)
     {
         // ---- 왼팔 ----
-        ctrl_buf[SHM_INDEX_LEFT_SHOULDER_ROLL].pos = pos_commands_[CONTROL_VEC_INDEX_LEFT_SHOULDER_ROLL];
         ctrl_buf[SHM_INDEX_LEFT_SHOULDER_PITCH].pos = pos_commands_[CONTROL_VEC_INDEX_LEFT_SHOULDER_PITCH];
+        ctrl_buf[SHM_INDEX_LEFT_SHOULDER_ROLL].pos = pos_commands_[CONTROL_VEC_INDEX_LEFT_SHOULDER_ROLL];
         ctrl_buf[SHM_INDEX_LEFT_SHOULDER_YAW].pos = pos_commands_[CONTROL_VEC_INDEX_LEFT_SHOULDER_YAW];
         ctrl_buf[SHM_INDEX_LEFT_ELBOW_PITCH].pos = pos_commands_[CONTROL_VEC_INDEX_LEFT_ELBOW_PITCH];
         ctrl_buf[SHM_INDEX_LEFT_WRIST_ROLL].pos = pos_commands_[CONTROL_VEC_INDEX_LEFT_WRIST_ROLL];
         ctrl_buf[SHM_INDEX_LEFT_WRIST_YAW].pos = pos_commands_[CONTROL_VEC_INDEX_LEFT_WRIST_YAW];
         ctrl_buf[SHM_INDEX_LEFT_WRIST_PITCH].pos = pos_commands_[CONTROL_VEC_INDEX_LEFT_WRIST_PITCH];
         // 그리퍼 미장착 버전이라 주석 처리
-        // ctrl_buf[SHM_INDEX_LEFT_GRIPPER].pos = pos_commands_[CONTROL_VEC_INDEX_LEFT_GRIPPER];
+        ctrl_buf[SHM_INDEX_LEFT_GRIPPER].pos = pos_commands_[CONTROL_VEC_INDEX_LEFT_GRIPPER];
 
         // ---- 오른팔 ----
         //
@@ -298,38 +306,38 @@ namespace areumii_hardware_interface
         // 왼팔 그리퍼 자리만큼 한 칸씩 앞당겨진 7~13 이 된다. (아래 숫자를 직접 박아둔 이유)
         // 반면 fb_buf / ctrl_buf 는 공유메모리 레이아웃 그대로이므로 SHM_INDEX_* 를 그대로 쓴다.
         // 그리퍼가 추가되면 아래 숫자를 CONTROL_VEC_INDEX_RIGHT_* 로 되돌리고 그리퍼 주석을 풀면 된다.
-        ctrl_buf[SHM_INDEX_RIGHT_SHOULDER_PITCH].pos = pos_commands_[7];   // right_shoulder_pitch
-        ctrl_buf[SHM_INDEX_RIGHT_SHOULDER_ROLL].pos = pos_commands_[8];   // right_shoulder_roll
-        ctrl_buf[SHM_INDEX_RIGHT_SHOULDER_YAW].pos = pos_commands_[9];   // right_shoulder_yaw
-        ctrl_buf[SHM_INDEX_RIGHT_ELBOW_PITCH].pos = pos_commands_[10];   // right_elbow_pitch
-        ctrl_buf[SHM_INDEX_RIGHT_WRIST_ROLL].pos = pos_commands_[11];   // right_wrist_roll
-        ctrl_buf[SHM_INDEX_RIGHT_WRIST_YAW].pos = pos_commands_[12];   // right_wrist_yaw
-        ctrl_buf[SHM_INDEX_RIGHT_WRIST_PITCH].pos = pos_commands_[13];   // right_wrist_pitch
+        ctrl_buf[SHM_INDEX_RIGHT_SHOULDER_PITCH].pos = pos_commands_[CONTROL_VEC_INDEX_RIGHT_SHOULDER_PITCH];   // right_shoulder_pitch
+        ctrl_buf[SHM_INDEX_RIGHT_SHOULDER_ROLL].pos = pos_commands_[CONTROL_VEC_INDEX_RIGHT_SHOULDER_ROLL];   // right_shoulder_roll
+        ctrl_buf[SHM_INDEX_RIGHT_SHOULDER_YAW].pos = pos_commands_[CONTROL_VEC_INDEX_RIGHT_SHOULDER_YAW];   // right_shoulder_yaw
+        ctrl_buf[SHM_INDEX_RIGHT_ELBOW_PITCH].pos = pos_commands_[CONTROL_VEC_INDEX_RIGHT_ELBOW_PITCH];   // right_elbow_pitch
+        ctrl_buf[SHM_INDEX_RIGHT_WRIST_ROLL].pos = pos_commands_[CONTROL_VEC_INDEX_RIGHT_WRIST_ROLL];   // right_wrist_roll
+        ctrl_buf[SHM_INDEX_RIGHT_WRIST_YAW].pos = pos_commands_[CONTROL_VEC_INDEX_RIGHT_WRIST_YAW];   // right_wrist_yaw
+        ctrl_buf[SHM_INDEX_RIGHT_WRIST_PITCH].pos = pos_commands_[CONTROL_VEC_INDEX_RIGHT_WRIST_PITCH];   // right_wrist_pitch
         // 그리퍼 미장착 버전이라 주석 처리
-        // ctrl_buf[SHM_INDEX_RIGHT_GRIPPER].pos = pos_commands_[14];   // right_gripper
+        ctrl_buf[SHM_INDEX_RIGHT_GRIPPER].pos = pos_commands_[CONTROL_VEC_INDEX_RIGHT_GRIPPER];   // right_gripper
           // 단위:rad 
 
         // ---- 왼팔 ----
-        ctrl_buf[SHM_INDEX_LEFT_SHOULDER_ROLL].vel = vel_commands_[CONTROL_VEC_INDEX_LEFT_SHOULDER_ROLL];
         ctrl_buf[SHM_INDEX_LEFT_SHOULDER_PITCH].vel = vel_commands_[CONTROL_VEC_INDEX_LEFT_SHOULDER_PITCH];
+        ctrl_buf[SHM_INDEX_LEFT_SHOULDER_ROLL].vel = vel_commands_[CONTROL_VEC_INDEX_LEFT_SHOULDER_ROLL];
         ctrl_buf[SHM_INDEX_LEFT_SHOULDER_YAW].vel = vel_commands_[CONTROL_VEC_INDEX_LEFT_SHOULDER_YAW];
         ctrl_buf[SHM_INDEX_LEFT_ELBOW_PITCH].vel = vel_commands_[CONTROL_VEC_INDEX_LEFT_ELBOW_PITCH];
         ctrl_buf[SHM_INDEX_LEFT_WRIST_ROLL].vel = vel_commands_[CONTROL_VEC_INDEX_LEFT_WRIST_ROLL];
         ctrl_buf[SHM_INDEX_LEFT_WRIST_YAW].vel = vel_commands_[CONTROL_VEC_INDEX_LEFT_WRIST_YAW];
         ctrl_buf[SHM_INDEX_LEFT_WRIST_PITCH].vel = vel_commands_[CONTROL_VEC_INDEX_LEFT_WRIST_PITCH];
         // 그리퍼 미장착 버전이라 주석 처리
-        // ctrl_buf[SHM_INDEX_LEFT_GRIPPER].vel = vel_commands_[CONTROL_VEC_INDEX_LEFT_GRIPPER];
+        ctrl_buf[SHM_INDEX_LEFT_GRIPPER].vel = vel_commands_[CONTROL_VEC_INDEX_LEFT_GRIPPER];
 
         // ---- 오른팔 ---- (인덱스 사정은 위 주석 참고)
-        ctrl_buf[SHM_INDEX_RIGHT_SHOULDER_PITCH].vel = vel_commands_[7];   // right_shoulder_pitch
-        ctrl_buf[SHM_INDEX_RIGHT_SHOULDER_ROLL].vel = vel_commands_[8];   // right_shoulder_roll
-        ctrl_buf[SHM_INDEX_RIGHT_SHOULDER_YAW].vel = vel_commands_[9];   // right_shoulder_yaw
-        ctrl_buf[SHM_INDEX_RIGHT_ELBOW_PITCH].vel = vel_commands_[10];   // right_elbow_pitch
-        ctrl_buf[SHM_INDEX_RIGHT_WRIST_ROLL].vel = vel_commands_[11];   // right_wrist_roll
-        ctrl_buf[SHM_INDEX_RIGHT_WRIST_YAW].vel = vel_commands_[12];   // right_wrist_yaw
-        ctrl_buf[SHM_INDEX_RIGHT_WRIST_PITCH].vel = vel_commands_[13];   // right_wrist_pitch
+        ctrl_buf[SHM_INDEX_RIGHT_SHOULDER_PITCH].vel = vel_commands_[CONTROL_VEC_INDEX_RIGHT_SHOULDER_PITCH];   // right_shoulder_pitch
+        ctrl_buf[SHM_INDEX_RIGHT_SHOULDER_ROLL].vel = vel_commands_[CONTROL_VEC_INDEX_RIGHT_SHOULDER_ROLL];   // right_shoulder_roll
+        ctrl_buf[SHM_INDEX_RIGHT_SHOULDER_YAW].vel = vel_commands_[CONTROL_VEC_INDEX_RIGHT_SHOULDER_YAW];   // right_shoulder_yaw
+        ctrl_buf[SHM_INDEX_RIGHT_ELBOW_PITCH].vel = vel_commands_[CONTROL_VEC_INDEX_RIGHT_ELBOW_PITCH];   // right_elbow_pitch
+        ctrl_buf[SHM_INDEX_RIGHT_WRIST_ROLL].vel = vel_commands_[CONTROL_VEC_INDEX_RIGHT_WRIST_ROLL];   // right_wrist_roll
+        ctrl_buf[SHM_INDEX_RIGHT_WRIST_YAW].vel = vel_commands_[CONTROL_VEC_INDEX_RIGHT_WRIST_YAW];   // right_wrist_yaw
+        ctrl_buf[SHM_INDEX_RIGHT_WRIST_PITCH].vel = vel_commands_[CONTROL_VEC_INDEX_RIGHT_WRIST_PITCH];   // right_wrist_pitch
         // 그리퍼 미장착 버전이라 주석 처리
-        // ctrl_buf[SHM_INDEX_RIGHT_GRIPPER].vel = vel_commands_[14];   // right_gripper
+        ctrl_buf[SHM_INDEX_RIGHT_GRIPPER].vel = vel_commands_[CONTROL_VEC_INDEX_RIGHT_GRIPPER];   // right_gripper
          // 단위:rad/s 
         shm_ptr->write_ctrl(ctrl_buf);
 
