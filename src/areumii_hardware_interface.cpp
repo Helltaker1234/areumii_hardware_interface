@@ -8,8 +8,8 @@
 #include <algorithm>
 
 
-#define open_gripper_L_REV -0.44
-#define close_gripper_L_REV 0.85
+#define open_gripper_L_REV 0.44     // 원래는 부호가 반대여야 하나, joint_states 읽어보니 반대로 나와서 부호 반대로 지정함.
+#define close_gripper_L_REV -0.85   // 원래는 부호가 반대여야 하나, joint_states 읽어보니 반대로 나와서 부호 반대로 지정함.
 #define open_gripper_L_PRISM 0.03
 #define close_gripper_L_PRISM 0.001
 
@@ -247,8 +247,8 @@ namespace areumii_hardware_interface
         vel_states_[CONTROL_VEC_INDEX_LEFT_WRIST_PITCH] = static_cast<double>(fb_buf[SHM_INDEX_LEFT_WRIST_PITCH].vel);
 
         // 그리퍼 미장착 버전이라 주석 처리
-        pos_states_[CONTROL_VEC_INDEX_LEFT_GRIPPER] = pos_commands_[CONTROL_VEC_INDEX_LEFT_GRIPPER];
-        vel_states_[CONTROL_VEC_INDEX_LEFT_GRIPPER] = vel_commands_[CONTROL_VEC_INDEX_LEFT_GRIPPER];
+        pos_states_[CONTROL_VEC_INDEX_LEFT_GRIPPER] = close_gripper_L_PRISM + (static_cast<double>(fb_buf[SHM_INDEX_LEFT_GRIPPER].pos) - close_gripper_L_REV) * (open_gripper_L_PRISM - close_gripper_L_PRISM) / (open_gripper_L_REV - close_gripper_L_REV);
+        vel_states_[CONTROL_VEC_INDEX_LEFT_GRIPPER] = static_cast<double>(fb_buf[SHM_INDEX_LEFT_GRIPPER].vel);
 
 
         // ---- 오른팔 ----
@@ -280,8 +280,8 @@ namespace areumii_hardware_interface
         vel_states_[CONTROL_VEC_INDEX_RIGHT_WRIST_PITCH] = static_cast<double>(fb_buf[SHM_INDEX_RIGHT_WRIST_PITCH].vel);   // right_wrist_pitch
 
         // 그리퍼 미장착 버전이라 주석 처리
-        pos_states_[CONTROL_VEC_INDEX_RIGHT_GRIPPER] = pos_commands_[CONTROL_VEC_INDEX_RIGHT_GRIPPER];
-        vel_states_[CONTROL_VEC_INDEX_RIGHT_GRIPPER] = vel_commands_[CONTROL_VEC_INDEX_RIGHT_GRIPPER];   // right_gripper
+        pos_states_[CONTROL_VEC_INDEX_RIGHT_GRIPPER] = close_gripper_R_PRISM + (static_cast<double>(fb_buf[SHM_INDEX_RIGHT_GRIPPER].pos) - close_gripper_R_REV) * (open_gripper_R_PRISM - close_gripper_R_PRISM) / (open_gripper_R_REV - close_gripper_R_REV);
+        vel_states_[CONTROL_VEC_INDEX_RIGHT_GRIPPER] = static_cast<double>(fb_buf[SHM_INDEX_RIGHT_GRIPPER].vel);   // right_gripper
 
         // pos_states_[7] = static_cast<double>(fb_buf[0].pos);
         // vel_states_[7] = static_cast<double>(fb_buf[0].vel);
