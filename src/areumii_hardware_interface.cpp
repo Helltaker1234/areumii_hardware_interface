@@ -338,7 +338,7 @@ namespace areumii_hardware_interface
         ctrl_buf[SHM_INDEX_LEFT_WRIST_YAW].vel = vel_commands_[CONTROL_VEC_INDEX_LEFT_WRIST_YAW];
         ctrl_buf[SHM_INDEX_LEFT_WRIST_PITCH].vel = vel_commands_[CONTROL_VEC_INDEX_LEFT_WRIST_PITCH];
         // 그리퍼 미장착 버전이라 주석 처리
-        ctrl_buf[SHM_INDEX_LEFT_GRIPPER].vel = vel_commands_[CONTROL_VEC_INDEX_LEFT_GRIPPER];
+        // ctrl_buf[SHM_INDEX_LEFT_GRIPPER].vel = vel_commands_[CONTROL_VEC_INDEX_LEFT_GRIPPER];
 
         // ---- 오른팔 ---- (인덱스 사정은 위 주석 참고)
         ctrl_buf[SHM_INDEX_RIGHT_SHOULDER_PITCH].vel = vel_commands_[CONTROL_VEC_INDEX_RIGHT_SHOULDER_PITCH];   // right_shoulder_pitch
@@ -349,8 +349,15 @@ namespace areumii_hardware_interface
         ctrl_buf[SHM_INDEX_RIGHT_WRIST_YAW].vel = vel_commands_[CONTROL_VEC_INDEX_RIGHT_WRIST_YAW];   // right_wrist_yaw
         ctrl_buf[SHM_INDEX_RIGHT_WRIST_PITCH].vel = vel_commands_[CONTROL_VEC_INDEX_RIGHT_WRIST_PITCH];   // right_wrist_pitch
         // 그리퍼 미장착 버전이라 주석 처리
-        ctrl_buf[SHM_INDEX_RIGHT_GRIPPER].vel = vel_commands_[CONTROL_VEC_INDEX_RIGHT_GRIPPER];   // right_gripper
+        // ctrl_buf[SHM_INDEX_RIGHT_GRIPPER].vel = vel_commands_[CONTROL_VEC_INDEX_RIGHT_GRIPPER];   // right_gripper
          // 단위:rad/s 
+        
+        ctrl_buf[SHM_INDEX_LEFT_GRIPPER].Kp = 1.0;
+        ctrl_buf[SHM_INDEX_LEFT_GRIPPER].Kd = 0.5;
+
+        ctrl_buf[SHM_INDEX_RIGHT_GRIPPER].Kp = 1.0;
+        ctrl_buf[SHM_INDEX_RIGHT_GRIPPER].Kd = 0.5;
+        
         shm_ptr->write_ctrl(ctrl_buf);
 
         
